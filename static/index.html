@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FIFO Priority Scheduler</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="top">
+    <h1>FIFO Priority Scheduler</h1>
+    <p class="sub">Add tasks, then run them. The highest priority runs first (1 is highest). Tasks with the same priority run in the order they arrived.</p>
+  </header>
+
+  <main class="layout">
+    <section class="panel controls" aria-label="Controls">
+      <h2>Add a task</h2>
+      <form id="add-form" autocomplete="off" novalidate>
+        <label for="name">Task name</label>
+        <input id="name" name="name" type="text" maxlength="40" placeholder="e.g. Backup Files" required>
+
+        <label for="priority">Priority</label>
+        <select id="priority" name="priority">
+          <option value="1">1 - Critical</option>
+          <option value="2">2 - High</option>
+          <option value="3" selected>3 - Medium</option>
+          <option value="4">4 - Low</option>
+          <option value="5">5 - Background</option>
+        </select>
+
+        <button type="submit" class="btn primary">Add task</button>
+      </form>
+
+      <h2>Run</h2>
+      <button type="button" id="run-next" class="btn accent">Run next task</button>
+
+      <h2>Options</h2>
+      <label class="switch">
+        <input type="checkbox" id="fifo" checked>
+        <span>FIFO tie-break (first come, first served)</span>
+      </label>
+      <p class="hint">Turn this off to see what a plain heap does with equal priorities.</p>
+
+      <h2>Sample data</h2>
+      <div class="row">
+        <button type="button" id="load-demo" class="btn">Load 6-task demo</button>
+        <button type="button" id="load-ties" class="btn">Load 7 equal-priority tasks</button>
+      </div>
+      <button type="button" id="reset" class="btn danger">Clear everything</button>
+    </section>
+
+    <section class="results" aria-label="Scheduler state">
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Queue</h2>
+          <span id="queue-count" class="count"></span>
+        </div>
+        <p class="hint">Top of the list runs next.</p>
+        <ol id="queue" class="queue"></ol>
+        <p id="queue-empty" class="empty" hidden>No tasks waiting.</p>
+      </div>
+
+      <div class="panel">
+        <h2>Heap array</h2>
+        <p class="hint">How the tasks are stored internally (index 0 is the root). Each cell shows the priority and the arrival number.</p>
+        <div id="heap" class="heap"></div>
+        <p id="heap-empty" class="empty" hidden>The heap is empty.</p>
+      </div>
+
+      <div class="panel">
+        <h2>Run order so far</h2>
+        <ol id="ran" class="ran"></ol>
+        <p id="ran-empty" class="empty">Nothing has run yet.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">Running only on your computer (127.0.0.1). Data lives in memory and is cleared when the server stops.</footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
